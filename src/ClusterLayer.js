@@ -16,6 +16,15 @@ const HouseIcon = L.divIcon({
     iconAnchor: [14, 12]
 });
 
+const BuildingIcon = L.divIcon({
+    html: `
+        <span class='fa fa-building fa-2x'></span>
+    `,
+    className: 'point-icon',
+    iconSize: [28, 24],
+    iconAnchor: [14, 12]
+});
+
 class ClusterLayer {
 
     constructor() {
@@ -34,7 +43,16 @@ class ClusterLayer {
     }
 
     prepareLeafletMarker = (marker, data) => {
-        marker.setIcon(HouseIcon);
+		const housingProperties = data.housingProperties;
+		if (housingProperties &&
+			housingProperties.Building &&
+            housingProperties.Building.Type &&
+            housingProperties.Building.Type.toLowerCase() === 'apartment') {
+            marker.setIcon(BuildingIcon);
+		} else {
+            marker.setIcon(HouseIcon);
+		}
+
         marker.on('click', this.onMarkerClicked);
         marker.data = data;
     };
@@ -75,7 +93,7 @@ class ClusterLayer {
         e.originalEvent.stopPropagation();
     };
 
-    updateRecords(records) {
+    updateRecords(records, housingProperties) {
     	this.layer.RemoveMarkers(this.markers);
 	    this.markers = new Array(records.length);
     	if (records.length > 0) {
@@ -84,7 +102,8 @@ class ClusterLayer {
 			    const marker = new PruneCluster.Marker(rec.latitude, rec.longitude);
 
 			    marker.data = {
-				    record: rec
+				    record: rec,
+                    housingProperties: housingProperties && rec.propertyId && housingProperties[rec.propertyId]
 			    };
 			    this.markers[i] = marker;
 		    }

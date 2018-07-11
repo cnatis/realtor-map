@@ -51,8 +51,6 @@ class App extends Component {
   }
 
   handleHousingChanged = (housingData) => {
-  	this.clusterLayer.updateRecords(housingData.Pins);
-
   	let housingProperties = housingData.Results.reduce((lookup, result) => {
   		lookup[result.Id] = result;
   		return lookup;
@@ -61,6 +59,8 @@ class App extends Component {
   	this.setState({
 	    housingProperties: housingProperties
     });
+
+    this.clusterLayer.updateRecords(housingData.Pins, housingProperties);
   };
 
   handleSearchChanged = (opts) => {
