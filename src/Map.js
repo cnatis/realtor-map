@@ -9,8 +9,7 @@ import 'leaflet-contextmenu/dist/leaflet.contextmenu.css';
 import './Map.css';
 import { loadGeoJSON } from "./geojson";
 import neighbourhoods from "./neighbourhood";
-
-'./geojson.js'
+import realtorApi from "./services/realtorApi";
 
 //Set Max Bounds to the entire world
 let southWest = L.latLng(-90, -180);
@@ -348,6 +347,7 @@ class Map extends Component {
 	onMoveEnd = () => {
 		this.isMoving = false;
 		this.checkReady();
+		this.updateRealtorEvents();
 	};
 
 	onZoomStart = () => {
@@ -357,6 +357,7 @@ class Map extends Component {
 	onZoomEnd = () => {
 		this.isZooming = false;
 		this.checkReady();
+		this.updateRealtorEvents();
 	};
 
 	onViewReset = () => {
@@ -427,6 +428,25 @@ class Map extends Component {
 			this.leafletMap._resetView(this.leafletMap.getCenter(), this.leafletMap.getZoom(), true); //we need this to redraw all layers (polygons, markers...) in the new projection.
 		}
 	};
+
+	updateRealtorEvents() {
+		let bounds = this.leafletMap.getBounds();
+
+		let opts = {
+			LongitudeMin: bounds.getWest(),
+			LongitudeMax: bounds.getEast(),
+			LatitudeMin: bounds.getSouth(),
+			LatitudeMax: bounds.getNorth(),
+			PriceMin: 100000,
+			PriceMax: 410000,
+		};
+
+		realtorApi.query(opts)
+			.then((results) => {
+				console.log(results);
+			});
+	}
+
 
 	// onTileError = (e) => {
 	// 	if(!this.baseLayerErrorState[e.target.options.label]) {

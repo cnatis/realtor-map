@@ -3,6 +3,11 @@ import _ from 'lodash';
 class RealtorAPI {
 
 	query = _.throttle((opts) => {
+		this._query(opts);
+	}, 5000);
+
+
+	_query = (opts) => {
 		// let opts = {
 		// 	CultureId: 1, ApplicationId: 1, PropertySearchTypeId: 1,
 		//
@@ -47,7 +52,7 @@ class RealtorAPI {
 			.catch(err => {
 				console.error(err);
 			});
-	}, 5000)
+	}
 }
 
 export default new RealtorAPI();
