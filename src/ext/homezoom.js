@@ -1,4 +1,5 @@
 import L from 'leaflet';
+
 /*
  * Leaflet zoom control with a home button for resetting the view.
  *
@@ -8,8 +9,6 @@ import L from 'leaflet';
  * Based on code by toms (https://gis.stackexchange.com/a/127383/48264).
  */
 (function () {
-    "use strict";
-
     L.Control.ZoomHome = L.Control.Zoom.extend({
         options: {
             position: 'topleft',
