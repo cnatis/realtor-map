@@ -1,17 +1,14 @@
 import neighbourhoods from "./neighbourhood";
 import L from "leaflet";
+import * as d3 from 'd3';
 
-export function loadGeoJSON(column, onEachFeature){
-    return L.geoJson(neighbourhoods, {style: styleFunction.bind(this, column), onEachFeature: onEachFeature});
+export function loadGeoJSON(column, domain){
+    return L.geoJson(neighbourhoods, {style: styleFunction.bind(this, column, domain), onEachFeature: onEachFeature.bind(this, column, domain)});
 }
 
-// var geoJsonLayer = L.geoJson(neighbourhoods, {style: styleFunction}, onEachFeature: showInfo)
-// .addTo(this.leafletMap);
-//
-// console.log(neighbourhoods);
-function styleFunction(column, feature){
+function styleFunction(column, domain, feature){
     return {
-        fillColor: getColor(feature.properties[column]),
+        fillColor: getColor2(feature.properties[column], domain),
         weight: 2,
         opacity: 1,
         color: 'white',
@@ -20,13 +17,25 @@ function styleFunction(column, feature){
     };
 }
 
-function getColor(d) {
-    return d > 1000 ? '#800026' :
-        d > 500 ? '#BD0026' :
-            d > 200 ? '#E31A1C' :
-                d > 100 ? '#FC4E2A' :
-                    d > 50 ? '#FD8D3C' :
-                        d > 20 ? '#FEB24C' :
-                            d > 10 ? '#FED976' :
-                                '#FFEDA0';
+
+function getColor2(v, d){
+	let minMeanMax = [d3.min(d), d3.mean(d), d3.max(d)];
+	let ramp = d3.scaleLinear().domain(minMeanMax).range(["green", "yellow", "red"]);
+	return ramp(v)
+}
+
+
+function onEachFeature(column, domain, feature, layer) {
+	layer.on({
+		mouseover: function () {
+			this.setStyle({
+				'fillColor': '#0b78b4',
+			});
+		},
+		mouseout: function () {
+			this.setStyle({
+				'fillColor': getColor2(feature.properties[column], domain),
+			});
+		}
+	});
 }
