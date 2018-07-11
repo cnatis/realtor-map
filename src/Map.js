@@ -7,6 +7,10 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-contextmenu/dist/leaflet.contextmenu.css';
 
 import './Map.css';
+import { loadGeoJSON } from "./geojson";
+import neighbourhoods from "./neighbourhood";
+
+'./geojson.js'
 
 //Set Max Bounds to the entire world
 let southWest = L.latLng(-90, -180);
@@ -75,19 +79,29 @@ class Map extends Component {
 		this.baseLayerErrorState = {};
 		this.isLoadingLayerConfig = true;
 		this.defaultLayerAdded = false;
-		
+
         // Add Layer Control To Map
-        this.layerControl = L.control.layers(this.baseLayers, this.layerList, {
+        this.layerControl = L.control.layers(this.baseLayers, [], {
             collapsed: false,
             position: 'topleft'
         })
         .addTo(this.leafletMap);
 
-        const basemap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        const basemap = L.tileLayer('http://a.basemaps.cartocdn.com/pitney-bowes-streets/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.pitneybowes.com">Pitney Bowes</a> contributors'
         }).addTo(this.leafletMap);
 
-        this.layerControl.addBaseLayer(basemap, 'basemap');
+        this.overlayLayers = [];
+        this.layerControl.addBaseLayer(basemap, 'Base Map');
+
+        for (let dataProperties in neighbourhoods[0].features[0].properties){
+        	let this_layer = loadGeoJSON(dataProperties);
+            this.overlayLayers.push(this_layer);
+            this.layerControl.addOverlay(this_layer, 'Neighbourhoods: ' + dataProperties);
+		}
+
+        this.leafletMap.fitBounds(this.overlayLayers[0].getBounds());
+
 
         // Add home button
         this.zoomHome = new L.Control.zoomHome({
@@ -105,15 +119,15 @@ class Map extends Component {
         // .addTo(this.leafletMap);
 
         // Fit the home bounds
-        this.fitBounds(this.homeBounds, {
-            padding: [50, 50]
-        });
+        // this.fitBounds(this.homeBounds, {
+        //     padding: [50, 50]
+        // });
 
         // Map from layer name/id to layer
-        this.layerList = {};
+
 	}
 
-	// Internal methods
+    // Internal methods
 	// loadLayerFromConfig = (config, types) => {
 	// 	if(typeof(config.type) === 'undefined' || config.type === null) {
 	// 		console.warn(`Layer config missing type for URL ${config.url}`);
