@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 import Map from './Map';
@@ -20,17 +19,13 @@ class App extends Component {
 
     this.clusterLayer = new ClusterLayer();
     this.clusterLayer.addTo(this.mapEl);
-    
+
     this.sidebarEl.open('home');
   }
 
   render() {
     return (
       <div className="App" ref={(r) => this.containerEl = r}>
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
         <Sidebar ref={(r) => this.sidebarEl = r} 
           selectedData={this.state.selectedData}/>
         <Map ref={(r) => this.mapEl = r}/>
