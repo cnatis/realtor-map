@@ -40,10 +40,14 @@ class App extends Component {
           searchOptions={this.state.searchOptions}
           onSearchChanged={this.handleSearchChanged}
         />
-        <Map ref={(r) => this.mapEl = r} searchOptions={this.state.searchOptions}/>
+        <Map ref={(r) => this.mapEl = r} searchOptions={this.state.searchOptions} onHousingChanged={this.handleHousingChanged} />
       </div>
     );
   }
+
+  handleHousingChanged = (housingData) => {
+  	this.clusterLayer.updateRecords(housingData.Pins);
+  };
 
   handleSearchChanged = (opts) => {
   	this.setState({

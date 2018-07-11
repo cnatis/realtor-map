@@ -452,6 +452,7 @@ class Map extends Component {
 		realtorApi.query(opts)
 			.then((results) => {
 				console.log(results);
+				this.props.onHousingChanged(results);
 			});
 	}, 5000);
 
