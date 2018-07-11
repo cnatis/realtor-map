@@ -68,6 +68,7 @@ class Map extends Component {
 		this.leafletMap.on('zoomstart', this.onZoomStart);
 		this.leafletMap.on('zoomend', this.onZoomEnd);
 		this.leafletMap.on('viewreset', this.onViewReset);
+		this.leafletMap.on('click', this.onClick);
 
 		// Setup Map Layers
 		this.baseLayers = {};
@@ -319,6 +320,13 @@ class Map extends Component {
 	// };
 
 	// Event handlers
+	onClick = (e) => {
+		this.containerEl.dispatchEvent(new CustomEvent('map-clicked', {
+			bubbles: true,
+			detail: e
+		}));
+	};
+
 	onMoveStart = () => {
 		this.isMoving = true;
 	};
