@@ -47,7 +47,7 @@ class Sidebar extends Component {
                                     const val = this.props.selectedData.properties[key];
 
                                     return (
-                                        <div>
+                                        <div className='row'>
                                             <label>
                                                 {key}:
                                             </label>
