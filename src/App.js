@@ -4,6 +4,8 @@ import './App.css';
 import Map from './Map';
 import Sidebar from './Sidebar';
 import ClusterLayer from './ClusterLayer';
+import realtorApi from "./services/realtorApi";
+import _ from 'lodash';
 
 class App extends Component {
 
@@ -71,6 +73,12 @@ class App extends Component {
 
   // Event handlers
   onMarkerClicked = (e) => {
+  	let item = e.detail.record;
+  	if (item.key) {
+  		// if this exists then we don't have the housing data for this item
+	   this.requestGroupDetails(item);
+    }
+
     this.setState({
       selectedData: e.detail,
       selectedDataType: 'marker'
@@ -89,6 +97,42 @@ class App extends Component {
           selectedDataType: 'feature'
       });
   };
+
+	requestGroupDetails = (pin) => {
+		let bounds = this.mapEl.leafletMap.getBounds();
+
+		let opts = {
+			LongitudeMin: bounds.getWest(),
+			LongitudeMax: bounds.getEast(),
+			LatitudeMin: bounds.getSouth(),
+			LatitudeMax: bounds.getNorth(),
+			GroupKey: pin.key
+		};
+		Object.assign(opts, this.state.searchOptions);
+
+		return realtorApi.query(opts)
+			.then((results) => {
+				console.log(results);
+
+				// search for the matching pin since the group search uses a larger lat/lon area
+				let index = _.findIndex(results.Results, (o) => {
+					return pin.latitude === o.Property.Address.latitude && pin.longitude === o.Property.Address.longitude;
+				});
+
+				let firstResult = (index >= 0)? results.Results[index] : results.Results[0];
+				let selectedId = firstResult.Id;
+
+				let updatedSelectedItem = Object.assign({}, this.state.selectedData.record, { key: "", propertyId: selectedId });
+				let updatedHousingProperties = Object.assign({}, this.state.housingProperties);
+				updatedHousingProperties[firstResult.Id] = firstResult;
+
+				this.setState({
+					selectedData: { record: updatedSelectedItem },
+					housingProperties: updatedHousingProperties
+				});
+			});
+	};
+
 
 }
 

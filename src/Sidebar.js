@@ -35,9 +35,7 @@ class Sidebar extends Component {
         if (this.props.selectedData) {
             if (this.props.selectedDataType === 'marker') {
 	            let propId = this.props.selectedData.record.propertyId;
-	            if (this.props.housingProperties[propId]) {
-		            selectedDataContent = (<SelectedItem item={this.props.housingProperties[propId]}/>);
-	            }
+	            selectedDataContent = (<SelectedItem pinData={this.props.selectedData.record} item={this.props.housingProperties[propId]}/>);
             } else if (this.props.selectedDataType === 'feature') {
                 selectedDataContent = (
                     <div className='details-content'>
@@ -173,6 +171,7 @@ class Sidebar extends Component {
 	        this.props.onSearchChanged(newSearchOptions);
         }
     }
+
 }
 
 export default Sidebar;
