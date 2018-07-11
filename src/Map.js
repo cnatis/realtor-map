@@ -95,7 +95,6 @@ class Map extends Component {
 
         for (let dataProperties in neighbourhoods[0].features[0].properties){
         	if (dataProperties != 'AREA_S_CD' && dataProperties != 'AREA_NAME') {
-				console.log(dataProperties)
                 let this_layer = loadGeoJSON(dataProperties);
                 this.overlayLayers.push(this_layer);
                 this.layerControl.addOverlay(this_layer, dataProperties);
