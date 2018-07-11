@@ -83,7 +83,7 @@ class Map extends Component {
         // Add Layer Control To Map
         this.layerControl = L.control.layers(this.baseLayers, [], {
             collapsed: true,
-            position: 'topleft'
+            position: 'topright'
         })
         .addTo(this.leafletMap);
 
