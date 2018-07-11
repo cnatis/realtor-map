@@ -2,12 +2,7 @@ import _ from 'lodash';
 
 class RealtorAPI {
 
-	query = _.throttle((opts) => {
-		return this._query(opts);
-	}, 5000);
-
-
-	_query = (opts) => {
+	query = (opts) => {
 		// let opts = {
 		// 	CultureId: 1, ApplicationId: 1, PropertySearchTypeId: 1,
 		//

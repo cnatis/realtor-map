@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import L from 'leaflet';
 import 'leaflet-contextmenu';
 import './ext/homezoom';
+import _ from 'lodash';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-contextmenu/dist/leaflet.contextmenu.css';
@@ -431,7 +432,7 @@ class Map extends Component {
 		}
 	};
 
-	updateRealtorEvents() {
+	updateRealtorEvents = _.throttle(() => {
 		let bounds = this.leafletMap.getBounds();
 
 		let opts = {
@@ -447,7 +448,7 @@ class Map extends Component {
 			.then((results) => {
 				console.log(results);
 			});
-	}
+	}, 5000);
 
 
 	// onTileError = (e) => {
