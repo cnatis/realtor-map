@@ -4,6 +4,8 @@ import 'leaflet-sidebar-v2';
 
 import 'leaflet-sidebar-v2/css/leaflet-sidebar.min.css';
 import './Sidebar.css';
+import SelectedItem from "./SelectedItem";
+
 
 class Sidebar extends Component {
 
@@ -32,7 +34,10 @@ class Sidebar extends Component {
         let selectedDataContent;
         if (this.props.selectedData) {
             if (this.props.selectedDataType === 'marker') {
-                selectedDataContent = this.props.selectedData.test;
+	            let propId = this.props.selectedData.record.propertyId;
+	            if (this.props.housingProperties[propId]) {
+		            selectedDataContent = (<SelectedItem item={this.props.housingProperties[propId]}/>);
+	            }
             } else if (this.props.selectedDataType === 'feature') {
                 selectedDataContent = (
                     <div className='details-content'>

@@ -82,7 +82,6 @@ class ClusterLayer {
 		    for (let i = 0, l = records.length; i < l; ++i) {
 			    let rec = records[i];
 			    const marker = new PruneCluster.Marker(rec.latitude, rec.longitude);
-			    console.log('count: ', rec.count);
 
 			    marker.data = {
 				    record: rec

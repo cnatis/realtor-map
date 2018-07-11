@@ -18,7 +18,8 @@ class App extends Component {
         StoryRange: '0-10',
         BedRange: '0-10',
         BathRange: '0-10'
-    }
+    },
+    housingProperties: []
   };
 
   componentDidMount() {
@@ -42,6 +43,7 @@ class App extends Component {
           selectedDataType={this.state.selectedDataType}
           searchOptions={this.state.searchOptions}
           onSearchChanged={this.handleSearchChanged}
+          housingProperties={this.state.housingProperties}
         />
         <Map ref={(r) => this.mapEl = r} searchOptions={this.state.searchOptions} onHousingChanged={this.handleHousingChanged} />
       </div>
@@ -50,6 +52,15 @@ class App extends Component {
 
   handleHousingChanged = (housingData) => {
   	this.clusterLayer.updateRecords(housingData.Pins);
+
+  	let housingProperties = housingData.Results.reduce((lookup, result) => {
+  		lookup[result.Id] = result;
+  		return lookup;
+    }, {});
+
+  	this.setState({
+	    housingProperties: housingProperties
+    });
   };
 
   handleSearchChanged = (opts) => {
