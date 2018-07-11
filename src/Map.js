@@ -94,9 +94,12 @@ class Map extends Component {
         this.layerControl.addBaseLayer(basemap, 'Base Map');
 
         for (let dataProperties in neighbourhoods[0].features[0].properties){
-        	let this_layer = loadGeoJSON(dataProperties);
-            this.overlayLayers.push(this_layer);
-            this.layerControl.addOverlay(this_layer, 'Neighbourhoods: ' + dataProperties);
+        	if (dataProperties != 'AREA_S_CD' && dataProperties != 'AREA_NAME') {
+				console.log(dataProperties)
+                let this_layer = loadGeoJSON(dataProperties);
+                this.overlayLayers.push(this_layer);
+                this.layerControl.addOverlay(this_layer, dataProperties);
+            }
 		}
 
         this.leafletMap.fitBounds(this.overlayLayers[0].getBounds());
