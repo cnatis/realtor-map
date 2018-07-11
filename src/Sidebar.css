@@ -1,0 +1,22 @@
+.form-content {
+    text-align: left;
+}
+
+.form-content > div {
+    margin: 5px 0;
+}
+
+.form-content label {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
+.form-content label > span {
+    flex: 0 0 150px;
+}
+
+.form-content label > input, 
+.form-content label > select {
+    flex: 1 1 auto;
+}

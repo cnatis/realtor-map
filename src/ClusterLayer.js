@@ -21,7 +21,8 @@ class ClusterLayer {
         this.layer.PrepareLeafletMarker = this.prepareLeafletMarker;
         
         for (let i = 0; i < 1000; i++) {
-            const marker = new PruneCluster.Marker(Math.random() * 90, Math.random() * 180);
+            const marker = new PruneCluster.Marker(59.91111 + (Math.random() - 0.5) * Math.random() * 0.00001 * i, 10.752778 + (Math.random() - 0.5) * Math.random() * 0.00002 * i);
+            
             marker.data = {
                 test: i
             };

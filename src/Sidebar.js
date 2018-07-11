@@ -3,12 +3,20 @@ import L from 'leaflet';
 import 'leaflet-sidebar-v2';
 
 import 'leaflet-sidebar-v2/css/leaflet-sidebar.min.css';
+import './Sidebar.css';
 
 class Sidebar extends Component {
+    state = {
+        searchOptions: {}
+    };
 
     componentDidMount() {
         this.sidebar = L.control.sidebar({
             container: this.containerEl
+        });
+
+        this.setState({
+            searchOptions: this.props.searchOptions
         });
     }
 
@@ -23,9 +31,29 @@ class Sidebar extends Component {
                 this.open('details');
             }
         }
+
+        if (nextProps.searchOptions) {
+            console.log('test');
+            const searchOptionsChanged = Object.keys(this.state.searchOptions)
+                .reduce((result, current) => {
+                    return result || this.state.searchOptions[current] !== nextProps.searchOptions[current];
+                }, false);
+
+            if (searchOptionsChanged) {
+                this.setState({
+                    searchOptions: nextProps.searchOptions
+                });    
+            }
+        } else if (nextProps.searchOptions !== this.props.searchOptions) {
+            this.setState({
+                searchOptions: nextProps.searchOptions
+            });
+        }
     }
 
     render() {
+        const searchOptions = this.state.searchOptions || {};
+
         return (
             <div ref={(r) => this.containerEl = r} className="leaflet-sidebar collapsed">
                 <div className="leaflet-sidebar-tabs">
@@ -44,6 +72,63 @@ class Sidebar extends Component {
                         <p>
                             Clickity clickity click something and something else will happen?
                         </p>
+                        <div className="form-content">
+                            <div>
+                                <label>
+                                    <span>Property Type</span>
+                                    <select value={searchOptions.PropertySearchTypeId} onChange={this.onPropertyChanged.bind(this, 'PropertySearchTypeId')}>
+                                        <option value={0}>No Preference</option>
+                                        <option value={1}>Residential</option>
+                                        <option value={2}>Recreational</option>
+                                        <option value={3}>Condo/Strata</option>
+                                        <option value={4}>Agriculture</option>
+                                        <option value={5}>Parking</option>
+                                        <option value={6}>Vacant Land</option>
+                                        <option value={7}>Multi Family</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <span>Transaction Type</span>
+                                    <select value={searchOptions.TransactionTypeId} onChange={this.onPropertyChanged.bind(this, 'TransactionTypeId')}>
+                                        <option value={1}>For sale or rent</option>
+                                        <option value={2}>For sale</option>
+                                        <option value={3}>For rent</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <span>Price Min</span>
+                                    <input type='text' pattern="[0-9]*" value={searchOptions.PriceMin} onChange={this.onPropertyChanged.bind(this, 'PriceMin')}/>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <span>Price Max</span>
+                                    <input type='text' pattern="[0-9]*" value={searchOptions.PriceMax} onChange={this.onPropertyChanged.bind(this, 'PriceMax')}/>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <span>Story Range</span>
+                                    <input type='text' pattern="[0-9]*-[0-9]*" placeholder='min-max' value={searchOptions.StoryRange} onChange={this.onPropertyChanged.bind(this, 'StoryRange')}/>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <span>Bed Range</span>
+                                    <input type='text' pattern="[0-9]*-[0-9]*" placeholder='min-max' value={searchOptions.BedRange} onChange={this.onPropertyChanged.bind(this, 'BedRange')}/>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <span>Bath Range</span>
+                                    <input type='text' pattern="[0-9]*-[0-9]*" placeholder='min-max' value={searchOptions.BathRange} onChange={this.onPropertyChanged.bind(this, 'BathRange')}/>
+                                </label>
+                            </div>
+                        </div>
                         <p>
                             Project made by: Chris Regnier, Thanh Pham, Anthony Kalsatos, Christian Natis
                         </p>
@@ -68,6 +153,24 @@ class Sidebar extends Component {
 
     close(tab) {
         this.sidebar.close(tab);
+    }
+
+    // Event handlers
+    onPropertyChanged(property, e) {
+        const isValid = e.target.checkValidity();
+        this.setState({
+            searchOptions: Object.assign({}, this.state.searchOptions, {
+                [property]: e.target.value
+            }),
+            isValid: isValid
+        }, () => {
+            if (isValid) {
+                this.containerEl.dispatchEvent(new CustomEvent('search-options-changed', {
+                    bubbles: true,
+                    detail: Object.assign({}, this.state.searchOptions)
+                }));
+            }
+        });
     }
 }
 
