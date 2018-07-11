@@ -29,6 +29,35 @@ class Sidebar extends Component {
     render() {
         const searchOptions = this.props.searchOptions;
 
+        let selectedDataContent;
+        if (this.props.selectedData) {
+            if (this.props.selectedDataType === 'marker') {
+                selectedDataContent = this.props.selectedData.test;
+            } else if (this.props.selectedDataType === 'feature') {
+                selectedDataContent = (
+                    <div className='details-content'>
+                        {
+                            Object.keys(this.props.selectedData.properties)
+                                .map(key => {
+                                    const val = this.props.selectedData.properties[key];
+
+                                    return (
+                                        <div>
+                                            <label>
+                                                {key}:
+                                            </label>
+                                            <span>
+                                                {val}
+                                            </span>
+                                        </div>
+                                    );
+                                })
+                        }
+                    </div>
+                );
+            }
+        }
+
         return (
             <div ref={(r) => this.containerEl = r} className="leaflet-sidebar collapsed">
                 <div className="leaflet-sidebar-tabs">
@@ -114,7 +143,7 @@ class Sidebar extends Component {
                             Data Details
                             <span className="leaflet-sidebar-close"><i className="fa fa-caret-left"></i></span>
                         </h1>
-                        {this.props.selectedData && this.props.selectedData.test}
+                        {selectedDataContent}
                     </div>
                 </div>
             </div>

@@ -8,6 +8,7 @@ import ClusterLayer from './ClusterLayer';
 class App extends Component {
 
   state = {
+    selectedDataType: null,
     selectedData: null,
     searchOptions: {
         PropertySearchTypeId: 0,
@@ -23,6 +24,7 @@ class App extends Component {
   componentDidMount() {
     this.containerEl.addEventListener('marker-clicked', this.onMarkerClicked);
     this.containerEl.addEventListener('map-clicked', this.onMapClicked);
+    this.containerEl.addEventListener('feature-clicked', this.onFeatureClicked);
 
     this.sidebarEl.sidebar.addTo(this.mapEl.leafletMap);
 
@@ -37,6 +39,7 @@ class App extends Component {
       <div className="App" ref={(r) => this.containerEl = r}>
         <Sidebar ref={(r) => this.sidebarEl = r} 
           selectedData={this.state.selectedData}
+          selectedDataType={this.state.selectedDataType}
           searchOptions={this.state.searchOptions}
           onSearchChanged={this.handleSearchChanged}
         />
@@ -58,7 +61,8 @@ class App extends Component {
   // Event handlers
   onMarkerClicked = (e) => {
     this.setState({
-      selectedData: e.detail
+      selectedData: e.detail,
+      selectedDataType: 'marker'
     });
   };
 
@@ -66,6 +70,13 @@ class App extends Component {
     this.setState({
       selectedData: null
     });
+  };
+
+  onFeatureClicked = (e) => {
+      this.setState({
+          selectedData: e.detail,
+          selectedDataType: 'feature'
+      });
   };
 
 }

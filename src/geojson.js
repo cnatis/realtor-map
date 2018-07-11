@@ -1,8 +1,8 @@
 import neighbourhoods from "./neighbourhood";
 import L from "leaflet";
 
-export function loadGeoJSON(column){
-    return L.geoJson(neighbourhoods, {style: styleFunction.bind(this, column)});
+export function loadGeoJSON(column, onEachFeature){
+    return L.geoJson(neighbourhoods, {style: styleFunction.bind(this, column), onEachFeature: onEachFeature});
 }
 
 // var geoJsonLayer = L.geoJson(neighbourhoods, {style: styleFunction}, onEachFeature: showInfo)
@@ -16,7 +16,7 @@ function styleFunction(column, feature){
         opacity: 1,
         color: 'white',
         dashArray: '3',
-        fillOpacity: 1
+        fillOpacity: 0.25
     };
 }
 

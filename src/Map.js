@@ -70,7 +70,7 @@ class Map extends Component {
 		this.leafletMap.on('movestart', this.onMoveStart);
 		this.leafletMap.on('moveend', this.onMoveEnd);
 		this.leafletMap.on('zoomstart', this.onZoomStart);
-		this.leafletMap.on('zoomend', this.onZoomEnd);
+        this.leafletMap.on('zoomend', this.onZoomEnd);
 		this.leafletMap.on('viewreset', this.onViewReset);
 		this.leafletMap.on('click', this.onClick);
 
@@ -96,7 +96,7 @@ class Map extends Component {
 
         for (let dataProperties in neighbourhoods[0].features[0].properties){
         	if (dataProperties != 'AREA_S_CD' && dataProperties != 'AREA_NAME') {
-                let this_layer = loadGeoJSON(dataProperties);
+                let this_layer = loadGeoJSON(dataProperties, this.onFeatureAdded);
                 this.overlayLayers.push(this_layer);
                 this.layerControl.addOverlay(this_layer, dataProperties);
             }
@@ -343,6 +343,9 @@ class Map extends Component {
 
 	// Event handlers
 	onClick = (e) => {
+		if (e.originalEvent.defaultPrevented) {
+			return;
+		}
 		this.containerEl.dispatchEvent(new CustomEvent('map-clicked', {
 			bubbles: true,
 			detail: e
@@ -456,6 +459,20 @@ class Map extends Component {
 			});
 	}, 5000);
 
+
+	onFeatureClicked = (e) => {
+        this.containerEl.dispatchEvent(new CustomEvent('feature-clicked', {
+            bubbles: true,
+            detail: e.target.feature
+        }));
+
+        e.originalEvent.stopPropagation();
+        e.originalEvent.preventDefault();
+	};
+
+	onFeatureAdded = (feature, layer) => {
+		layer.on('click', this.onFeatureClicked);
+	};
 
 	// onTileError = (e) => {
 	// 	if(!this.baseLayerErrorState[e.target.options.label]) {

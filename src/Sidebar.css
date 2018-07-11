@@ -1,22 +1,28 @@
-.form-content {
-    text-align: left;
-}
-
+.details-content > div,
 .form-content > div {
     margin: 5px 0;
 }
 
+.details-content label,
 .form-content label {
     display: flex;
     justify-content: space-between;
     font-weight: bold;
 }
 
+.details-content label,
 .form-content label > span {
-    flex: 0 0 150px;
+    flex: 0 0 200px;
 }
 
+.details-content span,
 .form-content label > input, 
 .form-content label > select {
     flex: 1 1 auto;
 }
+
+.details-content > div {
+    display: flex;
+    justify-content: space-between;
+}
+
