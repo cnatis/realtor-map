@@ -6,17 +6,10 @@ import 'leaflet-sidebar-v2/css/leaflet-sidebar.min.css';
 import './Sidebar.css';
 
 class Sidebar extends Component {
-    state = {
-        searchOptions: {}
-    };
 
     componentDidMount() {
         this.sidebar = L.control.sidebar({
             container: this.containerEl
-        });
-
-        this.setState({
-            searchOptions: this.props.searchOptions
         });
     }
 
@@ -31,28 +24,10 @@ class Sidebar extends Component {
                 this.open('details');
             }
         }
-
-        if (nextProps.searchOptions) {
-            console.log('test');
-            const searchOptionsChanged = Object.keys(this.state.searchOptions)
-                .reduce((result, current) => {
-                    return result || this.state.searchOptions[current] !== nextProps.searchOptions[current];
-                }, false);
-
-            if (searchOptionsChanged) {
-                this.setState({
-                    searchOptions: nextProps.searchOptions
-                });    
-            }
-        } else if (nextProps.searchOptions !== this.props.searchOptions) {
-            this.setState({
-                searchOptions: nextProps.searchOptions
-            });
-        }
     }
 
     render() {
-        const searchOptions = this.state.searchOptions || {};
+        const searchOptions = this.props.searchOptions;
 
         return (
             <div ref={(r) => this.containerEl = r} className="leaflet-sidebar collapsed">
@@ -157,20 +132,12 @@ class Sidebar extends Component {
 
     // Event handlers
     onPropertyChanged(property, e) {
-        const isValid = e.target.checkValidity();
-        this.setState({
-            searchOptions: Object.assign({}, this.state.searchOptions, {
-                [property]: e.target.value
-            }),
-            isValid: isValid
-        }, () => {
-            if (isValid) {
-                this.containerEl.dispatchEvent(new CustomEvent('search-options-changed', {
-                    bubbles: true,
-                    detail: Object.assign({}, this.state.searchOptions)
-                }));
-            }
-        });
+        if (e.target.checkValidity()) {
+	        let newSearchOptions = Object.assign({}, this.props.searchOptions, {
+		        [property]: e.target.value
+	        });
+	        this.props.onSearchChanged(newSearchOptions);
+        }
     }
 }
 

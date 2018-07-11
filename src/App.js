@@ -23,7 +23,6 @@ class App extends Component {
   componentDidMount() {
     this.containerEl.addEventListener('marker-clicked', this.onMarkerClicked);
     this.containerEl.addEventListener('map-clicked', this.onMapClicked);
-    this.containerEl.addEventListener('search-options-changed', this.onSearchOptionsChanged);
 
     this.sidebarEl.sidebar.addTo(this.mapEl.leafletMap);
 
@@ -38,11 +37,19 @@ class App extends Component {
       <div className="App" ref={(r) => this.containerEl = r}>
         <Sidebar ref={(r) => this.sidebarEl = r} 
           selectedData={this.state.selectedData}
-          searchOptions={this.state.searchOptions} />
-        <Map ref={(r) => this.mapEl = r}/>
+          searchOptions={this.state.searchOptions}
+          onSearchChanged={this.handleSearchChanged}
+        />
+        <Map ref={(r) => this.mapEl = r} searchOptions={this.state.searchOptions}/>
       </div>
     );
   }
+
+  handleSearchChanged = (opts) => {
+  	this.setState({
+	    searchOptions: opts
+    });
+  };
 
   // Event handlers
   onMarkerClicked = (e) => {
@@ -57,11 +64,6 @@ class App extends Component {
     });
   };
 
-  onSearchOptionsChanged = (e) => {
-    this.setState({
-      searchOptions: e.detail
-    });
-  };
 }
 
 export default App;

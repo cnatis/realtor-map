@@ -25,6 +25,8 @@ class RealtorAPI {
 		// 	// PropertyTypeGroupID:1
 		// };
 
+		console.log("search options: ", opts);
+
 		let params = { CultureId: 1, ApplicationId: 1, PropertySearchTypeId: 1 };
 		Object.assign(params, opts);
 

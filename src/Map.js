@@ -129,6 +129,12 @@ class Map extends Component {
 
 	}
 
+	componentDidUpdate(prevProps) {
+		if (prevProps.searchOptions !== this.props.searchOptions) {
+			this.updateRealtorEvents();
+		}
+	}
+
     // Internal methods
 	// loadLayerFromConfig = (config, types) => {
 	// 	if(typeof(config.type) === 'undefined' || config.type === null) {
@@ -439,10 +445,9 @@ class Map extends Component {
 			LongitudeMin: bounds.getWest(),
 			LongitudeMax: bounds.getEast(),
 			LatitudeMin: bounds.getSouth(),
-			LatitudeMax: bounds.getNorth(),
-			PriceMin: 100000,
-			PriceMax: 410000,
+			LatitudeMax: bounds.getNorth()
 		};
+		Object.assign(opts, this.props.searchOptions);
 
 		realtorApi.query(opts)
 			.then((results) => {
