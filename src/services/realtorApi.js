@@ -3,7 +3,7 @@ import _ from 'lodash';
 class RealtorAPI {
 
 	query = _.throttle((opts) => {
-		this._query(opts);
+		return this._query(opts);
 	}, 5000);
 
 
