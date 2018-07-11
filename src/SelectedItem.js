@@ -1,71 +1,80 @@
 import React, { Component } from 'react';
 
 export default class SelectedItem extends Component {
+
 	render() {
 		const item = this.props.item;
-		return (
-			<div className='details-content'>
-				<p>{item.MlsNumber}</p>
-				{item.Building ? (
-					<div>
-                        <div className='row'>
-                            <label>Type</label>
-                            <span>{item.Building.Type}</span>
-                        </div>
-                        <div className='row'>
-                            <label>Ammenities</label>
-                            <span>{item.Building.Ammenities}</span>
-                        </div>
-                        <div className='row'>
-                            <label>Bathrooms</label>
-                            <span>{item.Building.BathroomTotal}</span>
-                        </div>
-                        <div className='row'>
-                            <label>Bedrooms</label>
-                            <span>{item.Building.Bedrooms}</span>
-                        </div>
-					</div>
-				) : null}
-				{item.Property ? (
-					<div>
-                        <div className='row'>
-                            <label>Price</label>
-                            <span>{item.Property.Price}</span>
-                        </div>
-                        <div className='row'>
-                            <label>Property Type</label>
-                            <span>{item.Property.Type}</span>
-                        </div>
-                        <div className='row'>
-                            <label>Ownership Type</label>
-                            <span>{item.Property.OwnershipType}</span>
-                        </div>
-						{item.Property.Address ? (
-							<div className='row'>
-								<label>Address</label>
-								<span>{item.Property.Address.AddressText}</span>
-							</div>
-						) : null}
-                        {item.Property.Parking ? (
-							<div className='row'>
-								<label>Parking</label>
-								<span>{item.Property.Parking.map(p => p.name)}</span>
-							</div>
-                        ) : null}
-                        <div className='row'>
-                            <label>Near By Ammenities</label>
-                            <span>{item.Property.AmmenitiesNearBy}</span>
-                        </div>
-					</div>
-				) : null}
-                {item.PublicRemarks ? (
-                    <p>
-						<label>Description</label>
-                        {item.PublicRemarks}
-                    </p>
-                ) : null}
-			</div>
-		);
+		if (item) {
+			return (
+				<div className='details-content'>
+					<p>{item.MlsNumber}</p>
+					{item.Building ? (
+						<div>
+	                        <div className='row'>
+	                            <label>Type</label>
+	                            <span>{item.Building.Type}</span>
+	                        </div>
+	                        <div className='row'>
+	                            <label>Ammenities</label>
+	                            <span>{item.Building.Ammenities}</span>
+	                        </div>
+	                        <div className='row'>
+	                            <label>Bathrooms</label>
+	                            <span>{item.Building.BathroomTotal}</span>
+	                        </div>
+	                        <div className='row'>
+	                            <label>Bedrooms</label>
+	                            <span>{item.Building.Bedrooms}</span>
+	                        </div>
+						</div>
+					) : null}
+					{item.Property ? (
+						<div>
+	                        <div className='row'>
+	                            <label>Price</label>
+	                            <span>{item.Property.Price}</span>
+	                        </div>
+	                        <div className='row'>
+	                            <label>Property Type</label>
+	                            <span>{item.Property.Type}</span>
+	                        </div>
+	                        <div className='row'>
+	                            <label>Ownership Type</label>
+	                            <span>{item.Property.OwnershipType}</span>
+	                        </div>
+							{item.Property.Address ? (
+								<div className='row'>
+									<label>Address</label>
+									<span>{item.Property.Address.AddressText}</span>
+								</div>
+							) : null}
+	                        {item.Property.Parking ? (
+								<div className='row'>
+									<label>Parking</label>
+									<span>{item.Property.Parking.map(p => p.name)}</span>
+								</div>
+	                        ) : null}
+	                        <div className='row'>
+	                            <label>Near By Ammenities</label>
+	                            <span>{item.Property.AmmenitiesNearBy}</span>
+	                        </div>
+						</div>
+					) : null}
+	                {item.PublicRemarks ? (
+	                    <p>
+							<label>Description</label>
+	                        {item.PublicRemarks}
+	                    </p>
+	                ) : null}
+				</div>
+			);
+		}
+		else {
+			return (
+				<div>Loading</div>
+			);
+		}
+
 	}
 }
 
