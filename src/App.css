@@ -2,6 +2,8 @@
   text-align: center;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .App-logo {
@@ -14,6 +16,7 @@
   height: 150px;
   padding: 20px;
   color: white;
+  flex: 0 0 auto;
 }
 
 .App-title {
@@ -27,4 +30,8 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.map-container {
+  flex: 1 1 auto;
 }
