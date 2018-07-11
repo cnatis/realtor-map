@@ -472,21 +472,6 @@ class Map extends Component {
 			});
 	}, 5000);
 
-
-	onFeatureClicked = (e) => {
-        this.containerEl.dispatchEvent(new CustomEvent('feature-clicked', {
-            bubbles: true,
-            detail: e.target.feature
-        }));
-
-        e.originalEvent.stopPropagation();
-        e.originalEvent.preventDefault();
-	};
-
-	onFeatureAdded = (feature, layer) => {
-		layer.on('click', this.onFeatureClicked);
-	};
-
 	// onTileError = (e) => {
 	// 	if(!this.baseLayerErrorState[e.target.options.label]) {
 	// 		// This layer was working previously

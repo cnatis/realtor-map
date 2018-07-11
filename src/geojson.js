@@ -36,6 +36,15 @@ function onEachFeature(column, domain, feature, layer) {
 			this.setStyle({
 				'fillColor': getColor2(feature.properties[column], domain),
 			});
+		},
+        click: function (e) {
+            this._path.parentElement.dispatchEvent(new CustomEvent('feature-clicked', {
+				bubbles: true,
+				detail: feature
+			}));
+
+			e.originalEvent.stopPropagation();
+			e.originalEvent.preventDefault();
 		}
 	});
 }
