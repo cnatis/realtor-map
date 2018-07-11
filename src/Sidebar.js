@@ -20,25 +20,21 @@ class Sidebar extends Component {
             // Selected data changed
             if (nextProps.selectedData == null) {
                 // No data selected
-                this.close('details');
-                return;
+                return this.close('details');
             }
 
             if (nextProps.selectedDataType === 'marker') {
                 if (nextProps.selectedData && nextProps.selectedData.housingProperties) {
                     // Markers need housing data to be meaningful
-                    this.open('details');
-                    return;
+                    return this.open('details');
                 }
             } else if (nextProps.selectedDataType === 'feature') {
                 // Features always have their data
-                this.open('details');
-                return;
+                return this.open('details');
             }
 
-            // Anything else that might be funny
-            this.close('details');
-            return;
+            // Close if we havent already decided we should open
+            return this.close('details');
         }
     }
 
