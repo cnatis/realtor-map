@@ -15,7 +15,12 @@ app.use(function(req, res, next) {
 });
 
 app.post('/realtor', (req, res) => {
-		req.pipe(request(REALTOR_URL)).pipe(res);
+		try {
+			req.pipe(request(REALTOR_URL)).pipe(res);
+		}
+		catch (e) {
+			res.sendStatus(500);
+		}
 	});
 
 // app.use('/data', express.static(path.join(__dirname, 'data')));
