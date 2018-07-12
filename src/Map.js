@@ -95,20 +95,20 @@ class Map extends Component {
         this.layerControl.addBaseLayer(basemap, 'Base Map');
 
         this.dataValues = {};
-        this.geoProperties = Object.keys(neighbourhoods[0].features[0].properties);
+        this.geoProperties = Object.keys(neighbourhoods.features[0].properties);
 
-		for (let record in neighbourhoods[0].features){
+		for (let record in neighbourhoods.features){
 			for (let property in this.geoProperties) {
 				if (!this.dataValues[this.geoProperties[property]]) {
 					this.dataValues[this.geoProperties[property]] = []
 				}
 				else {
-					this.dataValues[this.geoProperties[property]].push(neighbourhoods[0].features[record]['properties'][this.geoProperties[property]])
+					this.dataValues[this.geoProperties[property]].push(neighbourhoods.features[record]['properties'][this.geoProperties[property]])
 				}
 			}
 		}
 
-        for (let dataProperties in neighbourhoods[0].features[0].properties){
+        for (let dataProperties in neighbourhoods.features[0].properties){
         	if (dataProperties !== 'AREA_S_CD' && dataProperties !== 'AREA_NAME') {
                 let this_layer = loadGeoJSON(dataProperties, this.dataValues[dataProperties]);
                 this.overlayLayers.push(this_layer);
